@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+        <script type="text/javascript" src="LCpi1.js"></script>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title></title>
+	<meta name="generator" content="LibreOffice 4.2.7.2 (Linux)">
+	<meta name="created" content="20150219;0">
+	<meta name="changed" content="20150219;205005341190248">
+
+	<style type="text/css">
+	<!--
+		p { color: #000000 }
+	-->
+	
+    .global {
+            background-color: rgb(20, 50, 255);   
+   	}
+
+	.body  {
+            background: rgb(95, 50, 255); 
+	}
+    .graphic1 {
+            float: right;
+            top: 10px;
+    }
+    .graphic2 {
+            float: left;
+    }
+    
+    .normal1 {
+	       text-align: center;
+	       font-size: 18px;
+	       font-family:'Trebuchet MS';
+	       color: rgb(255, 255, 255);	   
+   	}
+    
+    .header {
+           height: 50px;
+           background:rgb(95, 50, 255);
+           border:0px solid #CCC;
+           width: 100%;
+           margin:0px auto;
+           top: 0px;
+           text-align: left;
+           font-size: 14px;
+	       font-family:'Trebuchet MS';
+           color: rgb(255,255,255)
+    }
+
+ 	.button {
+	       width: 500px;
+	       height: 100px;
+	       text-align: center;
+	       font-size: 60px;
+	       font-family:'Trebuchet MS';
+	       color: rgb(255, 255, 255);
+	       background-color: rgb(20, 100, 40);
+	       border-radius: 20px 20px 20px 20px;
+               position: relative;
+	       top: 50%;
+	       -webkit-transform: translateY(200%);
+	       -ms-transform: translateY(200%);
+	       transform: translateY(200%);
+   	}
+	</style>
+	
+</head>
+<body lang="en-US" text="#000000" dir="ltr" class = "body" >
+
+        <div class="header">
+    <div>
+	<div class = "graphic1" ><img src="image3.png" onclick="toggle(OnOff)"/></div>
+    <div class = "graphic2" ><img src="image4.png" onclick="toggle(OnOff)"/></div>
+     </div>
+    </div>
+        <div align="center">
+            <input class="button" type="button" id="OnOff" value="LIGHTS OFF" onclick="toggle(this)">
+	</div>
+        <div align="center"  id="next_turn_on" class = "normal1">
+		  10:00pm
+	</div>
+        <div align="center" id="next_turn_off" class = "normal1" >
+		  10:00pm
+	</div>
+
+
+</body>
+</html>
