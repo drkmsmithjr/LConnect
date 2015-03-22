@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "LawnConnect.py", line 27, in <module>
-    OnDuration = int(random.uniform(6-9.5)*60*60)
-TypeError: uniform() takes exactly 3 arguments (2 given)
