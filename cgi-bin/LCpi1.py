@@ -22,8 +22,8 @@ cgitb.enable()
 def printHTTPheader():
     print "Content-type: text/html\n"
 
-statfile = "/home/pi/LawnConnect/status.txt" 
-statfile3 = "/home/pi/LawnConnect/status3.txt" 
+statfile = "/home/pi/LConnect/status.txt" 
+statfile3 = "/home/pi/LConnect/status3.txt" 
 dateformat = "%d-%m-%y: %I:%M %p"   
 
 
@@ -36,7 +36,7 @@ def main():
     while True:
         try:
             with open(statfile,'r') as f:
-               LC_ON, next_sunset, next_turnoff = pickle.load(f)
+               LC_ON, next_sunset, next_turnoff, peak_read = pickle.load(f)
             break 
         except:
             time.sleep(.1)
@@ -49,12 +49,13 @@ def main():
         LC_ON = False
 
     with open(statfile,'w') as f:
-        pickle.dump((LC_ON,next_sunset,next_turnoff),f)
+        pickle.dump((LC_ON,next_sunset,next_turnoff,peak_read),f)
   
     a = json.dumps({
           "LC_ON" : LC_ON,
           "NextTurnOn": "Next Sunset: " + next_sunset.strftime(dateformat),
-          "NextTurnOff":"Next Turnoff: " + next_turnoff.strftime(dateformat)
+          "NextTurnOff":"Next Turnoff: " + next_turnoff.strftime(dateformat),
+          "PeakRead":"Current (A): " + str(peak_read)
     })
     # now print the AJAX information
 

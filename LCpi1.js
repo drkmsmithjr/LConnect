@@ -72,6 +72,7 @@ function handleServerResponse(){
                         jsontotal = JSON.parse(xmlResponse);
 			document.getElementById("next_turn_on").innerHTML = jsontotal.NextTurnOn;
    			document.getElementById("next_turn_off").innerHTML = jsontotal.NextTurnOff;
+    			document.getElementById("current").innerHTML = jsontotal.PeakRead;
 			if(jsontotal.LC_ON){
 				//alert("LC_ON is true")
 				document.getElementById("OnOff").value = "LIGHTS ON"
