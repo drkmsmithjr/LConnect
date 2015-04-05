@@ -78,12 +78,13 @@ while True:
         if DEBUG:
                 #print "trim_pot:", trim_pot
                 #print "last_read", last_read
-                print "voltage:", (int ((3.3*trim_pot/1024.00)*10000))/10000.00
-                print "peak_voltage:", (int ((3.3*peak_read/1024.00)*10000))/10000.00
+                voltage_print = (int ((3.3*trim_pot/1024.00)*10000))/10000.00
+                peak_voltage_print = (int ((3.3*peak_read/1024.00)*10000))/10000.00
+                print "peak_voltage: %s ; voltage: %s" % (peak_voltage_print, voltage_print)
 
         #if ( pot_adjust > tolerance ):
         trim_pot_changed = True
     
        
         # hang out and do nothing for a half second
-        #time.sleep(0.01)
+        time.sleep(0.001)
