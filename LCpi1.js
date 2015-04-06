@@ -81,6 +81,12 @@ function handleServerResponse(){
 				document.getElementById("OnOff").value = "LIGHTS OFF"
 				document.getElementById("OnOff").style.backgroundColor = "rgb(40,100,40)"
 			}
+                        if(jsontotal.LampOff){
+				//alert("LC_ON is true")
+				document.getElementById("LampOff").innerHTML = "LAMP BURNT OUT"
+			}else{
+				document.getElementById("LampOff").innerHTML = ""
+			}
 			
 			
 			setTimeout('process()',1000);	

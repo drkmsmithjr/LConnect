@@ -36,7 +36,7 @@ def main():
     while True:
         try:
             with open(statfile,'r') as f:
-               LC_ON, next_sunset, next_turnoff, peak_read = pickle.load(f)
+               LC_ON, next_sunset, next_turnoff, peak_read,Lamp_off = pickle.load(f)
             break 
         except:
             time.sleep(.1)
@@ -49,13 +49,14 @@ def main():
         LC_ON = False
 
     with open(statfile,'w') as f:
-        pickle.dump((LC_ON,next_sunset,next_turnoff,peak_read),f)
+        pickle.dump((LC_ON,next_sunset,next_turnoff,peak_read,Lamp_off),f)
   
     a = json.dumps({
           "LC_ON" : LC_ON,
           "NextTurnOn": "Next Sunset: " + next_sunset.strftime(dateformat),
           "NextTurnOff":"Next Turnoff: " + next_turnoff.strftime(dateformat),
-          "PeakRead":"Current (A): " + str(peak_read)
+          "PeakRead":"Current (A): " + str(peak_read),
+          "LampOff": Lamp_off 
     })
     # now print the AJAX information
 

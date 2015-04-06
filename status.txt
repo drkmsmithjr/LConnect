@@ -1,24 +1,17 @@
-(I00
+(I01
 cdatetime
 datetime
 p0
-<<<<<<< HEAD
 (S'\x07\xdf\x04\x05\x13\x0e\x16\x00\x00\x06'
-=======
-(S'\x07\xdf\x04\x04\x13\r&\x00\x00\x05'
->>>>>>> 4b2d4bd6f3585cfd43341342681ea8732dc59852
 p1
 tp2
 Rp3
 g0
-<<<<<<< HEAD
-(S'\x07\xdf\x04\x06\x0175\x00\x00\x06'
-=======
-(S"\x07\xdf\x04\x05\x01':\x00\x00\x05"
->>>>>>> 4b2d4bd6f3585cfd43341342681ea8732dc59852
+(S'\x07\xdf\x04\x06\x01%!\x00\x00\x06'
 p4
 tp5
 Rp6
-I0
+I180
+I00
 tp7
 .
