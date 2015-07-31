@@ -48,8 +48,14 @@ def main():
     elif dform.getvalue("LawnConnect_Off"):
         LC_ON = False
 
-    with open(statfile,'w') as f:
-        pickle.dump((LC_ON,next_sunset,next_turnoff,peak_read,Lamp_off),f)
+    # We will try to wait if there is an issue with write
+    while True:
+        try:
+            with open(statfile,'w') as f:
+               pickle.dump((LC_ON,next_sunset,next_turnoff,peak_read,Lamp_off),f)
+            break
+        except:
+            time.sleep(.1)
   
     a = json.dumps({
           "LC_ON" : LC_ON,
