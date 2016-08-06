@@ -2,3 +2,7 @@ Traceback (most recent call last):
   File "LawnConnect.py", line 178, in <module>
     trim_pot = readadc(current_tran_winding_neg_adc_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
 NameError: name 'current_tran_winding_neg_adc_adc' is not defined
+Traceback (most recent call last):
+  File "LawnConnect.py", line 257, in <module>
+    print "peak dc value"
+IOError: [Errno 27] File too large

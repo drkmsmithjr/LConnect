@@ -48,7 +48,7 @@
            color: rgb(255,255,255)
     }
 
- 	.button {
+    .button {
 	       width: 500px;
 	       height: 100px;
 	       text-align: center;
@@ -63,6 +63,24 @@
 	       -ms-transform: translateY(250%);
 	       transform: translateY(250%);
    	}
+
+
+       .button2 {
+	       width: 250px;
+	       height: 50px;
+	       text-align: center;
+	       font-size: 30px;
+	       font-family:'Trebuchet MS';
+	       color: rgb(255, 255, 255);
+	       background-color: rgb(20, 100, 40);
+	       border-radius: 20px 20px 20px 20px;
+               position: relative;
+	       top: 50%;
+	       -webkit-transform: translateY(150%);
+	       -ms-transform: translateY(0%);
+	       transform: translateY(0%);
+   	}
+
 	</style>
 	
 </head>
@@ -74,6 +92,11 @@
     <div class = "graphic2" ><img src="image4.png" onclick="toggle(OnOff)"/></div>
      </div>
     </div>
+
+        <div align="center">
+          <input class="button2" type="button" id="Calibrate" value="CALIBRATE" onclick="toggle(this)">
+	</div>
+
         <div align="center">
             <input class="button" type="button" id="OnOff" value="LIGHTS OFF" onclick="toggle(this)">
 	</div>
@@ -88,7 +111,6 @@
 	</div>
         <div align="center" id="LampOff" class = "normal1" >
 	</div>
-
 
 </body>
 </html>
