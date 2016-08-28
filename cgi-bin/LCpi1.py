@@ -36,7 +36,7 @@ def main():
     while True:
         try:
             with open(statfile,'r') as f:
-               LC_ON, next_sunset, next_turnoff = pickle.load(f)
+               LC_ON, next_sunset, next_turnoff, peak_read,Lamp_off = pickle.load(f)
             break 
         except:
             time.sleep(.1)
@@ -48,13 +48,21 @@ def main():
     elif dform.getvalue("LawnConnect_Off"):
         LC_ON = False
 
-    with open(statfile,'w') as f:
-        pickle.dump((LC_ON,next_sunset,next_turnoff),f)
+    # We will try to wait if there is an issue with write
+    while True:
+        try:
+            with open(statfile,'w') as f:
+               pickle.dump((LC_ON,next_sunset,next_turnoff,peak_read,Lamp_off),f)
+            break
+        except:
+            time.sleep(.1)
   
     a = json.dumps({
           "LC_ON" : LC_ON,
           "NextTurnOn": "Next Sunset: " + next_sunset.strftime(dateformat),
-          "NextTurnOff":"Next Turnoff: " + next_turnoff.strftime(dateformat)
+          "NextTurnOff":"Next Turnoff: " + next_turnoff.strftime(dateformat),
+          "PeakRead":"Current (A): " + str(peak_read),
+          "LampOff": Lamp_off 
     })
     # now print the AJAX information
 
