@@ -24,5 +24,5 @@ LawnConnect automatically controls and monitors your lawn lights and lets you kn
 6. Breakboard to mount components
 7. 15Amp Relay
 
-The full description and step by step setup instructions are located on the wiki
+The full description and step by step setup instructions are located at https://drkmsmithjr.github.io/LConnect
 
