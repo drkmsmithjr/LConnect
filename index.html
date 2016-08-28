@@ -20,7 +20,11 @@
 
     <section class="main-content">
       <h1>
-<a id="lawnconnect" class="anchor" href="#lawnconnect" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>LawnConnect</h1>
+<a id="lawnconnect" class="anchor" href="#lawnconnect" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://drkmsmithjr.github.io/LConnect">LawnConnect</a>
+</h1>
+
+<h3>
+<a id="a-simple-raspberry-pi-powered-lawn-light-controller" class="anchor" href="#a-simple-raspberry-pi-powered-lawn-light-controller" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A simple Raspberry Pi powered lawn light controller</h3>
 
 <p>Never have dark outside lighting again!!!<br>
 LawnConnect automatically controls and monitors your lawn lights and lets you know when something is wrong</p>
@@ -38,23 +42,114 @@ LawnConnect automatically controls and monitors your lawn lights and lets you kn
 </ol>
 
 <h1>
-<a id="system-block-diagram" class="anchor" href="#system-block-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>System Block Diagram</h1>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description:</h1>
 
-<p><img src="https://github.com/drkmsmithjr/LConnect/blob/gh-pages/blockdiagram.png" alt=""></p>
+<p>Have you ever went outside and noticed all your lawn lights were burnt out?   This happened to me a little while ago.  So I decided there had to be a better way and a perfect project for the Raspberry Pi.   This Raspberry Pi project is a simple solution that will ensure you have complete control of your lights, even when you aren't around.  Try this simple but powerful internet of things project using the Raspberry pi.        </p>
+
+<p>The Rasberry pi will control all the turn on and off of lights and will continually monitor the system power to determine if a light is not working.  On the event a light is not working or burnt out, a text message will be sent to the phone number of your choice telling you of the problem.</p>
+
+<p>Through a web application, you can remotely monitor the status and control the turn on and off of the system.  Otherwise, the Raspberry pi will turn on your lights exactly at sunset each night and will turn them off a random time between 6 and 9 hours later.    </p>
 
 <h1>
-<a id="project-components" class="anchor" href="#project-components" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Project Components:</h1>
+<a id="web-application" class="anchor" href="#web-application" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Web Application:</h1>
 
-<ol>
-<li>A Lawn Light System that Needs to be Controled</li>
-<li>Raspberry Pi Version B or Version B+</li>
-<li>USB Wifi </li>
-<li>Current Transformer</li>
-<li>ADC converter with SPI interface </li>
-<li>MISC resistor and capacitor values for filtering.</li>
-<li>Breakboard to mount components</li>
-<li>15Amp Relay</li>
-</ol>
+<p>The web application, hosted by the Raspberry Pi, gives a status of the system.   The Lights On button is used to turn on and off the lights.  Text messages tell when the lights will be turned on and off next.  there is a current monitor that shows represents the current being used right now by the system. A calibrate button (no implemented yet) will be used to calibrate the system when it first turns on.  </p>
+
+<p><img src="https://github.com/drkmsmithjr/LConnect/blob/master/webpage_shot.png" alt="alt text" title="web page screen shot"></p>
+
+<h1>
+<a id="block-diagram" class="anchor" href="#block-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Block Diagram</h1>
+
+<p><img src="https://github.com/drkmsmithjr/LConnect/blob/master/blockdiagram.png" alt="alt text" title="System Block Diagram"></p>
+
+<h2>
+<a id="current-senor-board" class="anchor" href="#current-senor-board" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Current Senor Board</h2>
+
+<p>The current sensor board will monitor the AC primary of the Lawn Light system.   A current transformer monitors the signal and converts the signal into a low voltage AC wave that the MCP3008 10Bit ADC can read.    The ADC reads the AC signal many times to find the peak value.  This peak value represents the power in the system.   </p>
+
+<h2>
+<a id="relay-board" class="anchor" href="#relay-board" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Relay Board</h2>
+
+<p>The HOT Wire of the Lawn Lights is controled by a high current and voltage relay.  the Raspberry Pi can drive the relay directly using the low current relay windings.</p>
+
+<h2>
+<a id="rpi-power-supply" class="anchor" href="#rpi-power-supply" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>RPi Power Supply</h2>
+
+<p>A 2 Amp power supply is recommended.  This power supply is always on and provides power to the Rasberry Pi and all the other LawnConnect Control circuitry.</p>
+
+<h2>
+<a id="raspberry-pi" class="anchor" href="#raspberry-pi" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Raspberry Pi</h2>
+
+<p>A model B+ is used.   This Raspberry Pi needs to be setup with Raspbian distribution and to auto connect to the wifi system.    </p>
+
+<h1>
+<a id="wiring-diagram" class="anchor" href="#wiring-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Wiring Diagram:</h1>
+
+<p>This is how the Raspberry Pi is connected to the sensor board schematic and the relay board
+<img src="https://github.com/drkmsmithjr/LConnect/blob/master/WiringDiagram.png" alt="alt text" title="wiring diagram"></p>
+
+<h1>
+<a id="bom" class="anchor" href="#bom" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BOM:</h1>
+
+<p>The major components for the project are listed below
+<img src="https://github.com/drkmsmithjr/LConnect/blob/master/BOM.png" alt="alt text" title="BOM"></p>
+
+<h1>
+<a id="sensor-board-schematic" class="anchor" href="#sensor-board-schematic" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sensor Board Schematic</h1>
+
+<p>The current sensor board is used to take the secondary of the current sensor and using a MCP3008 10bit ADC, convert into a digital signal that can be sampled by the Raspberry Pi
+<img src="https://github.com/drkmsmithjr/LConnect/blob/master/LawnConnect-CurrentSensor.png" alt="alt text" title="Current Sensor"></p>
+
+<h1>
+<a id="software" class="anchor" href="#software" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Software</h1>
+
+<p>The software uses a python program to monitor the current through a SPI interface and the relays through simple GPIO pins.   The simple python web server, (i.e. <code>python -m CGIHTTPServer 8010</code>) is used to service web requests.  The client webpage uses javascript to monitor user inputs and output data from the monitor program.   Communication between the web server and the main program is performed by datafiles. </p>
+
+<p>The setup is straighforward.  You need to setup the Rasbperry Pi to automatically connect to your wifi system.  Then you also need to be able to access the Raspberry pi as a headless system.   There are plenty of guides available on the internet.  The key is that you can log into the system via <code>ssh pi@xxx.xxx.1.xxx</code> where <code>xxx.xxx.1.xxx</code> is the IP address of your Raspberry Pi.  </p>
+
+<p>Download the github software into the <code>/home/pi</code> directory.  </p>
+
+<pre><code>git clone https://github.com/drkmsmithjr/LConnect.git
+</code></pre>
+
+<p>Edit and setup the crontab to automatically start the boot.sh script.</p>
+
+<pre><code>crontab -e
+</code></pre>
+
+<p>edit this file with the following command</p>
+
+<pre><code>@reboot  /home/pi/LConnect/boot.sh
+</code></pre>
+
+<p>Reboot the system to get things started.</p>
+
+<pre><code>sudo reboot
+</code></pre>
+
+<p>Open a browser and find the IP address of the Raspberry Pi to access the webpage.   You need the :8010 port extension to access the browser</p>
+
+<pre><code>RPIADDRESS:8010/LawnConnectIndex.html
+</code></pre>
+
+<h2>
+<a id="twillo-account-setup" class="anchor" href="#twillo-account-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Twillo Account Setup</h2>
+
+<p>The LawnConnect will sent an SMS message to your cell phone using Twillo Account.   You will need to get a Free Twillo Account at <code>https://www.twilio.com</code>.   After getting an account, get the twillo Phone Number, Account Number, and Token and place them into the twilloaccount.py file.  this file is not in the Git download but can easily be generated as follows:</p>
+
+<pre><code>#!/usr/bin/python
+# where to put the twillo account information
+Taccount= 'twillo_account'
+Ttoken ='twillo_token'
+Tnumber = 'twillo number'
+To_number = 'Number to Call'
+</code></pre>
+
+<p>save this <code>twilloaccount.py</code> file into the <code>/home/pi/LConnect</code> directory</p>
+
+<p>You are all set.  Good Luck and let me know if you have any questions.</p>
+
+<p>The webpage for the project is located at <a href="https://drkmsmithjr.github.io/LConnect">https://drkmsmithjr.github.io/LConnect</a></p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/drkmsmithjr/LConnect">Lconnect</a> is maintained by <a href="https://github.com/drkmsmithjr">drkmsmithjr</a>.</span>
