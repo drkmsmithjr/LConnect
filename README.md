@@ -51,9 +51,14 @@ The current sensor board is used to take the secondary of the current sensor and
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/LawnConnect-CurrentSensor.png "Current Sensor")
 
 # Sofware
-The software uses a python program to monitor the current through a SPI interface and the relays through simple GPIO pins.   The simple python web server, (i.e. python -m CGIHTTPServer 8010) is used to service web requests.  The client webpage uses javascript to monitor user inputs and output data from the monitor program.   Communication between the web server and the main program is performed by datafiles. 
+The software uses a python program to monitor the current through a SPI interface and the relays through simple GPIO pins.   The simple python web server, (i.e. `python -m CGIHTTPServer 8010`) is used to service web requests.  The client webpage uses javascript to monitor user inputs and output data from the monitor program.   Communication between the web server and the main program is performed by datafiles. 
 
-The setup is straighforward.   Download the github software into the /home/pi directory.  
+The setup is straighforward.  You need to setup the Rasbperry Pi to automatically connect to your wifi system.  Then you also need to be able to access the Raspberry pi as a headless system.   There are plenty of guides available on the internet.  The key is that you can log into the system via `ssh pi@xxx.xxx.1.xxx` where `xxx.xxx.1.xxx` is the IP address of your Raspberry Pi.  
+
+Download the github software into the `/home/pi` directory.  
+```
+git clone https://github.com/drkmsmithjr/LConnect.git
+```
 
 Edit and setup the crontab to automatically start the boot.sh script.
 ```
@@ -69,7 +74,7 @@ sudo reboot
 ```
 Open a browser and find the IP address of the Raspberry Pi to access the webpage.   You need the :8010 port extension to access the browser
 ```
-RpiIPAddress:8010/LawnConnectIndex.html
+RPIADDRESS:8010/LawnConnectIndex.html
 ```
 
 The webpage for the project is located at https://drkmsmithjr.github.io/LConnect
