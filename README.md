@@ -81,7 +81,7 @@ RPIADDRESS:8010/LawnConnectIndex.html
 The LawnConnect will sent an SMS message to your cell phone using Twillo Account.   You will need to get a Free Twillo Account at `https://www.twilio.com`.   After getting an account, get the twillo Phone Number, Account Number, and Token and place them into the twilloaccount.py file.  this file is not in the Git download but can easily be generated as follows:
 ```
 #!/usr/bin/python
-# wehre to put the twillo account information
+# where to put the twillo account information
 Taccount= 'twillo_account'
 Ttoken ='twillo_token'
 Tnumber = 'twillo number'
