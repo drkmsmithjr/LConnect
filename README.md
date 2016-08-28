@@ -77,4 +77,18 @@ Open a browser and find the IP address of the Raspberry Pi to access the webpage
 RPIADDRESS:8010/LawnConnectIndex.html
 ```
 
+##Twillo Account Setup
+The LawnConnect will sent an SMS message to your cell phone using Twillo Account.   You will need to get a Free Twillo Account at `https://www.twilio.com`.   After getting an account, get the twillo Phone Number, Account Number, and Token and place them into the twilloaccount.py file.  this file is not in the Git download but can easily be generated as follows:
+```
+#!/usr/bin/python
+# wehre to put the twillo account information
+Taccount= 'twillo_account'
+Ttoken ='twillo_token'
+Tnumber = 'twillo number'
+To_number = 'Number to Call'
+```
+save this `twilloaccount.py` file into the `/home/pi/LConnect` directory
+
+You are all set.  Good Luck and let me know if you have any questions.
+
 The webpage for the project is located at https://drkmsmithjr.github.io/LConnect
