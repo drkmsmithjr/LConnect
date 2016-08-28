@@ -14,5 +14,7 @@ LawnConnect automatically controls and monitors your lawn lights and lets you kn
 5. Sends text messages when a light is out.
 6. Accounts for daylight savings time
 
-The full description and step by step setup instructions are located at https://drkmsmithjr.github.io/LConnect
+# Block Diagram:
+![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/blockdiagram.png "System Block Diagram")
 
+The full description and step by step setup instructions are located at https://drkmsmithjr.github.io/LConnect
