@@ -1,4 +1,4 @@
-# LawnConnect
+# [LawnConnect](https://drkmsmithjr.github.io/LConnect)
 
 ### A simple Raspberry Pi powered lawn light controller
 
