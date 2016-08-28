@@ -8,6 +8,8 @@ import RPi.GPIO as GPIO
 import math
 import random
 import pickle
+#this file has your account info
+# Parameters Taccount, Ttoken, Tnumber, To_number
 from twilloaccount import *
 
 # twillo account:  password:  ...      username: user@gmail.com
