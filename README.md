@@ -27,8 +27,16 @@ The web application, hosted by the Raspberry Pi, gives a status of the system.  
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/webpage_shot.png "web page screen shot")
 
 # Block Diagram
-A current sensor is used to monitor the power of the system.   A 15amp relay board will control the power to the system.
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/blockdiagram.png "System Block Diagram")
+## Current Senor Board
+The current sensor board will monitor the AC primary of the Lawn Light system.   A current transformer monitors the signal and converts the signal into a low voltage AC wave that the MCP3008 10Bit ADC can read.    The ADC reads the AC signal many times to find the peak value.  This peak value represents the power in the system.   
+## Relay Board
+The HOT Wire of the Lawn Lights is controled by a high current and voltage relay.  the Raspberry Pi can drive the relay directly using the low current relay windings.
+## RPi Power Supply
+A 2 Amp power supply is recommended.  This power supply is always on and provides power to the Rasberry Pi and all the other LawnConnect Control circuitry.
+## Raspberry Pi
+A model B+ is used.   This Raspberry Pi needs to be setup with Raspbian distribution and to auto connect to the wifi system.    
+
 
 # Wiring Diagram:
 This is how the Raspberry Pi is connected to the sensor board schematic and the relay board
@@ -41,5 +49,21 @@ The major components for the project are listed below
 # Sensor Board Schematic
 The current sensor board is used to take the secondary of the current sensor and using a MCP3008 10bit ADC, convert into a digital signal that can be sampled by the Raspberry Pi
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/LawnConnect-CurrentSensor.png "Current Sensor")
+
+# Sofware
+Setup if straightforward.
+
+Download the github software into the /home/pi directory.  
+
+Edit and setup the crontab to automatically start the boot.sh script.
+```
+crontab -e
+```
+edit this file with the following command
+```
+@reboot  /home/pi/LConnect/boot.sh
+```
+
+
 
 The webpage for the project is located at https://drkmsmithjr.github.io/LConnect
