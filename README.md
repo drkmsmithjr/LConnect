@@ -51,9 +51,9 @@ The current sensor board is used to take the secondary of the current sensor and
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/LawnConnect-CurrentSensor.png "Current Sensor")
 
 # Sofware
-Setup if straightforward.
+The software uses a python program to monitor the current through a SPI interface and the relays through simple GPIO pins.   The simple python web server, (i.e. python -m CGIHTTPServer 8010) is used to service web requests.  The client webpage uses javascript to monitor user inputs and output data from the monitor program.   Communication between the web server and the main program is performed by datafiles. 
 
-Download the github software into the /home/pi directory.  
+The setup is straighforward.   Download the github software into the /home/pi directory.  
 
 Edit and setup the crontab to automatically start the boot.sh script.
 ```
@@ -63,7 +63,13 @@ edit this file with the following command
 ```
 @reboot  /home/pi/LConnect/boot.sh
 ```
-
-
+Reboot the system to get things started.
+```
+sudo reboot
+```
+Open a browser and find the IP address of the Raspberry Pi to access the webpage.   You need the :8010 port extension to access the browser
+```
+RpiIPAddress:8010/LawnConnectIndex.html
+```
 
 The webpage for the project is located at https://drkmsmithjr.github.io/LConnect
