@@ -50,7 +50,7 @@ The major components for the project are listed below
 The current sensor board is used to take the secondary of the current sensor and using a MCP3008 10bit ADC, convert into a digital signal that can be sampled by the Raspberry Pi
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/LawnConnect-CurrentSensor.png "Current Sensor")
 
-# Sofware
+# Software
 The software uses a python program to monitor the current through a SPI interface and the relays through simple GPIO pins.   The simple python web server, (i.e. `python -m CGIHTTPServer 8010`) is used to service web requests.  The client webpage uses javascript to monitor user inputs and output data from the monitor program.   Communication between the web server and the main program is performed by datafiles. 
 
 The setup is straighforward.  You need to setup the Rasbperry Pi to automatically connect to your wifi system.  Then you also need to be able to access the Raspberry pi as a headless system.   There are plenty of guides available on the internet.  The key is that you can log into the system via `ssh pi@xxx.xxx.1.xxx` where `xxx.xxx.1.xxx` is the IP address of your Raspberry Pi.  
