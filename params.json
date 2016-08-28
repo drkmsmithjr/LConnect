@@ -1,0 +1,6 @@
+{
+  "name": "Lconnect",
+  "tagline": "LawnConnect - Raspberry Pi Controlled Lawn Lights",
+  "body": "# LawnConnect\r\n\r\n### A simple Raspberry Pi Controlled Lawn Light controller\r\n\r\nNever have dark outside lighting again!!!  \r\nLawnConnect automatically controls and monitors your lawn lights and lets you know when something is wrong\r\n\r\n# Features:\r\n\r\n1. Automatically Turns on Lights at Sunset\r\n2. Turns off lights a random time 6-9 hours later\r\n3. A Web Interface for monitoring and manual turning on and off lights\r\n4. Detects when a Light has burnt out\r\n5. Sends text messages when a light is out.\r\n6. Accounts for daylight savings time\r\n\r\n# Project Components: \r\n1. A Lawn Light System that Needs Control\r\n2. Raspberry Pi Version B:  The intelligence\r\n2. USB Wifi \r\n3. Current Transformer\r\n4. ADC converter with SPI interface \r\n5. MISC resistor and capacitor values for filtering.\r\n6. Breakboard to mount components\r\n7. 15Amp Relay\r\n\r\nThe full description and step by step setup instructions are located on the wiki\r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
