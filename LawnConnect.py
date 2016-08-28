@@ -9,7 +9,13 @@ import math
 import random
 import pickle
 #this file has your account info
-# Parameters Taccount, Ttoken, Tnumber, To_number
+# Parameters you need to supply Taccount, Ttoken, Tnumber, To_number
+# 
+# wehre to put the twillo account information
+#Taccount= 'twillo account'
+#Ttoken ='twillo token'
+#Tnumber = 'Twillo number'
+#To_number = 'NUMBER TO CALL'
 from twilloaccount import *
 
 # twillo account:  password:  ...      username: user@gmail.com
