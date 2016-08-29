@@ -76,6 +76,12 @@ Open a browser and find the IP address of the Raspberry Pi to access the webpage
 ```
 RPIADDRESS:8010/LawnConnectIndex.html
 ```
+## Setting up the Correct GPS Location
+You will need to put your Longitude and Latitude into the `LawnConnect.py` code by setting the `o.lat` and `o.long` parameters
+```
+    o.lat = '33.4672'
+    o.long = '-117.6981'
+```
 
 ##Twillo Account Setup
 The LawnConnect will sent an SMS message to your cell phone using Twillo Account.   You will need to get a Free Twillo Account at `https://www.twilio.com`.   After getting an account, get the twillo Phone Number, Account Number, and Token and place them into the twilloaccount.py file.  this file is not in the Git download but can easily be generated as follows:
