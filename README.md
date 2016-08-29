@@ -7,10 +7,10 @@ LawnConnect automatically controls and monitors your lawn lights and lets you kn
 
 # Features:
 
-1. Automatically Turns on Lights at Sunset
+1. Automatically Turns on Lights at Sunset using 15Amp/250v Relay
 2. Turns off lights a random time 6-9 hours later
 3. A Web Interface for monitoring and manual turning on and off lights
-4. Detects when a Light has burnt out
+4. Detects when a Light has burnt out using MCP3008 10Bit 8 Channel ADC
 5. Sends text messages when a light is out.
 6. Accounts for daylight savings time
 
