@@ -31,7 +31,7 @@ The web application, hosted by the Raspberry Pi, gives a status of the system.  
 ## Current Senor Board
 The current sensor board will monitor the AC primary of the Lawn Light system.   A current transformer monitors the signal and converts the signal into a low voltage AC wave that the MCP3008 10Bit ADC can read.    The ADC reads the AC signal many times to find the peak value.  This peak value represents the power in the system.   
 ## Relay Board
-The HOT Wire of the Lawn Lights is controled by a high current and voltage relay.  the Raspberry Pi can drive the relay directly using the low current relay windings.
+The HOT AC Wire of the Lawn Lights is controled by a 15v current and 250v relay.  the Raspberry Pi can drive the relay directly using the low current relay windings. CAUTION. EXTREME CARE MUST BE TAKEN WORKING WITH PRIMARY AC SIGNALS.  TOUCHING THESE LINES WITHOUT PROPER OPERATION CAN KILL.  IF YOU HAVE ANY DOUBT, DON'T DO IT.  ALWAYS CHECKOUT OPERATION OF THE RELAY FIRST WITHOUT AC POWER BEFORE TRYING FULL POWER.
 ## RPi Power Supply
 A 2 Amp power supply is recommended.  This power supply is always on and provides power to the Rasberry Pi and all the other LawnConnect Control circuitry.
 ## Raspberry Pi
