@@ -18,17 +18,19 @@ if __name__ == "__main__":
 # setting up the sunset parameters
 
     o = ephem.Observer()
-    o.lat = '33.4672'
-    o.long = '-117.6981'
+    o.lat = '33.5951'
+    o.long = '-117.6914'
     s=ephem.Sun()
     s.compute()
     
     # on duration in seconds
-    OnDuration = int(random.uniform(6,9.5)*60*60)
+    OnDuration = int(random.uniform(5,7)*60*60)
+    # delay of the turn on by 15 minutes
+    DelayOn = datetime.timedelta(seconds=(15*60)) 
     
     next_sunset = ephem.localtime(o.next_setting(s))
     next_sunrise = ephem.localtime(o.next_rising(s))
-    next_turnoff = next_sunset + datetime.timedelta(seconds=OnDuration)
+    next_turnoff = next_sunset+DelayOn + datetime.timedelta(seconds=OnDuration)
     
     # BCM numbering
     GPIO.setmode(GPIO.BCM)
@@ -47,7 +49,7 @@ if __name__ == "__main__":
     # the second inequality determines if we need to adjust the turn off time by 24 hours 
     LightOn = False
     
-    if datetime.datetime.now() < next_sunset:
+    if datetime.datetime.now() < (next_sunset+DelayOn):
         temp = next_turnoff + datetime.timedelta(hours = -24)
         if datetime.datetime.now() < temp:
             LightOn = True
@@ -79,12 +81,12 @@ if __name__ == "__main__":
                 time.sleep(.1)
                 
         # on duration in seconds
-        OnDuration = int(random.uniform(6,9.5)*60*60)
+        OnDuration = int(random.uniform(5,7)*60*60)
     
     # test if we should turn on lights or turn off lights
     # adjust the state of the lights  
         if LightOn == False:
-            if datetime.datetime.now() > next_sunset:
+            if datetime.datetime.now() > (next_sunset+DelayOn):
                 LightOn = True
                 print "The lights were turn on"
                 print LightOn
@@ -98,7 +100,7 @@ if __name__ == "__main__":
                 print "The lights were turned off"
                 print LightOn
                 #GPIO.setup(25,GPIO.OUT, initial=GPIO.HIGH)
-                next_turnoff = next_sunset + datetime.timedelta(seconds=OnDuration)
+                next_turnoff = (next_sunset+DelayOn) + datetime.timedelta(seconds=OnDuration)
         
         print "The Lights are:"
         print LightOn
