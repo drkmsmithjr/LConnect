@@ -18,8 +18,8 @@ if __name__ == "__main__":
 # setting up the sunset parameters
 
     o = ephem.Observer()
-    o.lat = '33.4672'
-    o.long = '-117.6981'
+    o.lat = '33.5951'
+    o.long = '-117.6914'
     s=ephem.Sun()
     s.compute()
     
