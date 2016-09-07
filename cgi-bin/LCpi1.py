@@ -56,12 +56,15 @@ def main():
             break
         except:
             time.sleep(.1)
+            
+    # allow just three digits of current        
+    peak_read = int(peak_read*1000)/1000.00
   
     a = json.dumps({
           "LC_ON" : LC_ON,
           "NextTurnOn": "Next Sunset: " + next_sunset.strftime(dateformat),
           "NextTurnOff":"Next Turnoff: " + next_turnoff.strftime(dateformat),
-          "PeakRead":"Current (A): " + str(peak_read),
+          "PeakRead":"Current (Amp RMS): " + str(peak_read),
           "LampOff": Lamp_off 
     })
     # now print the AJAX information

@@ -8,6 +8,7 @@ import RPi.GPIO as GPIO
 import math
 import random
 import pickle
+import math
 #this file has your account info
 # Parameters you need to supply Taccount, Ttoken, Tnumber, To_number
 # 
@@ -138,8 +139,16 @@ if __name__ == "__main__":
     # text timer (once a day in seconds)
     text_timer = time.time() + oneday
 
+    # ADC value to power output
+    # ADC is based on 3.3v range, or 3.22mv/bit with 10bits.
+    # Rsecondary is 470ohms
+    # transformer is 1:2500
+    # primary current = ADC*3.3v/1024/470*2500*sqrt(2)   
+    ADCtoCurrentGain = 3.3/1024/470*2500/math.sqrt(2)
+    print(ADCtoCurrentGain)
+    
     # threshold for a lamp off states this is a dv/dt value
-    Lamp_Off_Threshold = 7.0
+    Lamp_Off_Threshold = 7.0*ADCtoCurrentGain
 
     # calibrate the lamp status on the first turn off to on transition
     Lamp_Calibrate = True
@@ -255,6 +264,7 @@ if __name__ == "__main__":
         peak_neg_adc = z.pop()
         min_neg_adc = z[0]
         
+        peak_read = peak_read*ADCtoCurrentGain
 
         # a 3 tap FIR filter for peak read value        
         H2 = H1
@@ -310,8 +320,11 @@ if __name__ == "__main__":
                   trim_pot = abs(trim_pot - readadc(current_tran_winding_neg_adc, SPICLK, SPIMOSI, SPIMISO, SPICS))
                   if ( peak_read < trim_pot):
                      peak_read = trim_pot
+               
+               peak_read = peak_read*ADCtoCurrentGain
+               
                peak_save = peak_read
-
+                           
             H2 = peak_save
             H1 = peak_save
             H0 = peak_save
