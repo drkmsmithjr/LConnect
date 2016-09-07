@@ -22,7 +22,7 @@ The Rasberry pi will control all the turn on and off of lights and will continua
 Through a web application, you can remotely monitor the status and control the turn on and off of the system.  Otherwise, the Raspberry pi will turn on your lights exactly at sunset each night and will turn them off a random time between 6 and 9 hours later.    
 
 # Web Application:
-The web application, hosted by the Raspberry Pi, gives a status of the system.   The Lights On button is used to turn on and off the lights.  Text messages tell when the lights will be turned on and off next.  there is a current monitor that shows represents the current being used right now by the system. A calibrate button (no implemented yet) will be used to calibrate the system when it first turns on.  
+The web application, hosted by the Raspberry Pi, gives a status of the system.   The Lights On button is used to turn on and off the lights.  Text box messages tell when the lights will be turned on and off next.  there is a current monitor that shows the current being used the lawn lights. A calibrate button (not implemented yet) will be used to calibrate the system at anytime.  Right now calibrations occurs when the system first turns on.  
 
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/webpage_shot.png "web page screen shot")
 
