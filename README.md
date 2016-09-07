@@ -30,6 +30,10 @@ The web application, hosted by the Raspberry Pi, gives a status of the system.  
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/blockdiagram.png "System Block Diagram")
 ## Current Senor Board
 The current sensor board will monitor the AC primary of the Lawn Light system.   A current transformer monitors the signal and converts the signal into a low voltage AC wave that the MCP3008 10Bit ADC can read.    The ADC reads the AC signal many times to find the peak value.  This peak value represents the power in the system.   
+The ADC reading is converted into an RMS current by the following steps.   The 10 bit ADC reading is equally spaced across 3.3v, so the volts/bit = ADC_READING*3.3v/1024.   Since this is the voltage being read across the 470 ohm resistor, the current ready is obtained by dividing by this resistance (470ohms).  This represents the peak current on the secondary.  You have to multiply this by the current transformer turns ratio (2500:1) to obtain the current on the primary. Multiply this by 0.707 to obtain RMS current.  The result is RMS_CURRENT = ADC_READING*3.3v/1024/470*2500*.707
+
+For outside low voltage halogen lighting, where the reactance of the system is minimal, this RMS current can be multiplied by AC voltage (i.e. 120volts) to Obtan the power being used.    
+
 ## Relay Board
 The HOT AC Wire of the Lawn Lights is controled by a 15v current and 250v relay.  the Raspberry Pi can drive the relay directly using the low current relay windings. CAUTION. EXTREME CARE MUST BE TAKEN WORKING WITH PRIMARY AC SIGNALS.  TOUCHING THESE LINES WITHOUT PROPER OPERATION CAN KILL.  IF YOU HAVE ANY DOUBT, DON'T DO IT.  ALWAYS CHECKOUT OPERATION OF THE RELAY FIRST WITHOUT AC POWER BEFORE TRYING FULL POWER.
 ## RPi Power Supply
