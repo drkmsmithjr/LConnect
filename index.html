@@ -11,7 +11,7 @@
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">LConnect</h1>
+      <h1 class="project-name">Lconnect</h1>
       <h2 class="project-tagline">LawnConnect - Raspberry Pi Controlled Lawn Lights</h2>
       <a href="https://github.com/drkmsmithjr/LConnect" class="btn">View on GitHub</a>
       <a href="https://github.com/drkmsmithjr/LConnect/zipball/master" class="btn">Download .zip</a>
@@ -29,15 +29,14 @@
 <p>Never have dark outside lighting again!!!<br>
 LawnConnect automatically controls and monitors your lawn lights and lets you know when something is wrong</p>
 
-
 <h1>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features:</h1>
 
 <ol>
-<li>Automatically Turns on Lights at Sunset</li>
+<li>Automatically Turns on Lights at Sunset using 15Amp/250v Relay</li>
 <li>Turns off lights a random time 6-9 hours later</li>
 <li>A Web Interface for monitoring and manual turning on and off lights</li>
-<li>Detects when a Light has burnt out</li>
+<li>Detects when a Light has burnt out using MCP3008 10Bit 8 Channel ADC</li>
 <li>Sends text messages when a light is out.</li>
 <li>Accounts for daylight savings time</li>
 </ol>
@@ -49,19 +48,19 @@ LawnConnect automatically controls and monitors your lawn lights and lets you kn
 
 <p>The Rasberry pi will control all the turn on and off of lights and will continually monitor the system power to determine if a light is not working.  On the event a light is not working or burnt out, a text message will be sent to the phone number of your choice telling you of the problem.</p>
 
-<p>Through a web application, you can remotely monitor the status and control the turn on and off of the system.  Otherwise, the Raspberry pi will turn on your lights exactly at sunset each night and will turn them off a random time between 6 and 9 hours later.    </p>
+<p>Through a simple web application, you can remotely monitor the status and control the turn on and off of the system.  Otherwise, the Raspberry pi will turn on your lights exactly at sunset each night and will turn them off a random time between 6 and 9 hours later.    </p>
 
 <h1>
 <a id="web-application" class="anchor" href="#web-application" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Web Application:</h1>
 
-<p>The web application, hosted by the Raspberry Pi, gives a status of the system.   The Lights On button is used to turn on and off the lights.  Text box messages tell when the lights will be turned on and off next.  There is a current monitor that shows the current being used by the lawn lights. A calibrate button (not implemented yet) will be used to calibrate the system at any time.  Right now the system will be calibrated when it first turns on.  </p>
+<p>The web application, hosted by the Raspberry Pi, gives a status of the system.   The Lights On button is used to turn on and off the lights.  Text box messages tell when the lights will be turned on and off next.  there is a current monitor that shows the current being used the lawn lights. A calibrate button (not implemented yet) will be used to calibrate the system at anytime.  Right now calibrations occurs when the system first turns on.  </p>
 
-<p><img src="./webpage_shot.png" alt="screnshot" title="web page screen shot"></p>
+<p><img src="https://github.com/drkmsmithjr/LConnect/blob/master/webpage_shot.png" alt="alt text" title="web page screen shot"></p>
 
 <h1>
 <a id="block-diagram" class="anchor" href="#block-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Block Diagram</h1>
 
-<p><img src="./blockdiagram.png" alt="blockdiagram" title="System Block Diagram"></p>
+<p><img src="https://github.com/drkmsmithjr/LConnect/blob/master/blockdiagram.png" alt="alt text" title="System Block Diagram"></p>
 
 <h2>
 <a id="current-senor-board" class="anchor" href="#current-senor-board" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Current Senor Board</h2>
@@ -71,7 +70,7 @@ LawnConnect automatically controls and monitors your lawn lights and lets you kn
 <h2>
 <a id="relay-board" class="anchor" href="#relay-board" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Relay Board</h2>
 
-<p>The HOT Wire of the Lawn Lights is controled by a high current and voltage relay.  the Raspberry Pi can drive the relay directly using the low current relay windings.</p>
+<p>The HOT AC Wire of the Lawn Lights is controled by a 15A, 250v relay.  the Raspberry Pi GPIO signals then connects to the relay board control inputs to control the individual relays.  CAUTION. EXTREME CARE MUST BE TAKEN WORKING WITH PRIMARY AC SIGNALS.  TOUCHING THESE LINES WITHOUT PROPER PRECAUTION CAN KILL.  IF YOU HAVE ANY DOUBT, DON'T DO IT.  ALWAYS CHECKOUT OPERATION OF THE RELAY FIRST WITHOUT AC POWER BEFORE TRYING FULL POWER.</p>
 
 <h2>
 <a id="rpi-power-supply" class="anchor" href="#rpi-power-supply" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>RPi Power Supply</h2>
@@ -87,19 +86,24 @@ LawnConnect automatically controls and monitors your lawn lights and lets you kn
 <a id="wiring-diagram" class="anchor" href="#wiring-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Wiring Diagram:</h1>
 
 <p>This is how the Raspberry Pi is connected to the sensor board schematic and the relay board
-<img src="./WiringDiagram.png" alt="WiringDiagram" title="wiring diagram"></p>
+<img src="https://github.com/drkmsmithjr/LConnect/blob/master/WiringDiagram.png" alt="alt text" title="wiring diagram"></p>
 
 <h1>
 <a id="bom" class="anchor" href="#bom" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BOM:</h1>
 
 <p>The major components for the project are listed below
-<img src="./BOM.png" alt="BOM" title="BOM"></p>
+<img src="https://github.com/drkmsmithjr/LConnect/blob/master/BOM.png" alt="alt text" title="BOM"></p>
 
 <h1>
 <a id="sensor-board-schematic" class="anchor" href="#sensor-board-schematic" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sensor Board Schematic</h1>
 
-<p>The current sensor board is used to take the secondary of the current sensor and using a MCP3008 10bit ADC, convert into a digital signal that can be sampled by the Raspberry Pi
-<img src="./LawnConnect-CurrentSensor.png" alt="alt text" title="Current Sensor"></p>
+<p>The current sensor board connects the secondary of the current transformer to an analog to digital converter (ADC).    The ADC converts the current into a digital signal that can be sampled by the Raspberry Pi</p>
+
+<p><img src="https://github.com/drkmsmithjr/LConnect/blob/master/LawnConnect-CurrentSensor.png" alt="alt text" title="Current Sensor"></p>
+
+<p>This simple schematic accuratly reads the current of the lawn lights, protects against extreme conditions, and uses the signal processing capability of the raspberry pi to minimize components.  The heart of the circuit is the 2500 to 1 turns ratio current transformer that samples the primary current with a secondary current that is 1/2500th the primary current value.  The secondary current is converted into a voltage by the 470 ohm resistor (R1).  Different values of R1 will provide different system gains in reading the primary current.  Smaller values will provide less voltage.  Resistors over 470ohm are not recommended as they may degrade the 1% current transforer accuracy rating.  R1 was chosen in this case to accurately read currents up to 5amps RMS (approximately 600Watts of power from 120VAC outlet).  The two diodes, D1 and D2, will protect the ADC from extreme current surges.  They clamp the current to the 3.3v power supply or to the circuit ground and ensure the MPS3008 inputs don't get over their absolute maximum values.  Channel 0 and Channel 1 of the MPS3008 ADC, connected to each end of R1, are used to convert the voltage into a digital signal and transmit it to the Raspberry pi via an SPI interface.  The R1 voltage read by the ADC is a sinusoidal voltage.   It could have been converted into a rectified signal before being read, but this would take additional parts and reduce accuracy.    So instead, the Raspberry Pi is used to obtain the RMS current from this sinusoidal signal.   The Raspberry pi simply takes 100 consequtive readings to find the peak of the AC signal.   We adjusted the number of reading to ensure we were sampling the complete 60Hz sinusoidal signal.  The 10 bit ADC peak to peak sinusoidal readings are equally spaced across 3.3v, so the volts/bit = ADC READING times (3.3v/1024).   Since this is the voltage being read across the 470 ohm resistor, the current reading is obtained by dividing by this resistance (470ohms).  This represents the peak current on the secondary.  You have to multiply this by the current transformer turns ratio (2500:1) to obtain the current on the primary. Multiply this by 0.707 to obtain RMS current.  The result is RMS CURRENT = ADC_READING times (3.3v/1024/470(2500)(.707)).  Using the power of the Raspberry pi, this schematic monitors the peak and RMS currents of the lawn lights without a lot of addition components.</p>
+
+<p>For outside low voltage halogen lighting, where the reactance of the system is minimal, this RMS current can be multiplied by AC voltage (i.e. 120volts) to obtan the power being consumed.    </p>
 
 <h1>
 <a id="software" class="anchor" href="#software" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Software</h1>
@@ -134,14 +138,13 @@ LawnConnect automatically controls and monitors your lawn lights and lets you kn
 </code></pre>
 
 <h2>
-<a id="Setting up the Correct GPS Location" class="anchor" href="#Setting up the Correct GPS Location" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting up the Correct GPS Location</h2>
+<a id="setting-up-the-correct-gps-location" class="anchor" href="#setting-up-the-correct-gps-location" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting up the Correct GPS Location</h2>
 
-<p>You will need to put your Longitude and Latitude into the LawnConnect.py code by setting the o.lat and o.long parameters</p>
+<p>You will need to put your Longitude and Latitude into the <code>LawnConnect.py</code> code by setting the <code>o.lat</code> and <code>o.long</code> parameters</p>
 
-<pre><code>o.lat = '33.4672'
-o.long = '-117.6981'
+<pre><code>    o.lat = '33.4672'
+    o.long = '-117.6981'
 </code></pre>
-
 
 <h2>
 <a id="twillo-account-setup" class="anchor" href="#twillo-account-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Twillo Account Setup</h2>
