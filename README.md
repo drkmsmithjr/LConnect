@@ -2,13 +2,10 @@
 
 ### A simple Raspberry Pi powered lawn light controller
 
-[![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/HACKADAY.png "hackakay")](http://hackaday.com/2016/09/09/landscape-lighting-that-also-texts/) [Thanks HACKADAY for the BLOG Entry](http://hackaday.com/2016/09/09/landscape-lighting-that-also-texts/)
-
-
-
-
 Never have dark outside lighting again!!!  
 LawnConnect automatically controls and monitors your lawn lights and lets you know when something is wrong
+
+[![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/HACKADAY.png "hackakay")](http://hackaday.com/2016/09/09/landscape-lighting-that-also-texts/) [Thanks HACKADAY for the BLOG Entry](http://hackaday.com/2016/09/09/landscape-lighting-that-also-texts/)
 
 # Features:
 
