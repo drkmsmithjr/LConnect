@@ -2,8 +2,8 @@
 
 ### A simple Raspberry Pi powered lawn light controller
 
-[Thanks HACKADAY for the LawnConnect BLOG Entry](http://hackaday.com/2016/09/09/landscape-lighting-that-also-texts/)
-[![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/HACKADAY.png "hackakay")](http://hackaday.com/2016/09/09/landscape-lighting-that-also-texts/)
+[![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/HACKADAY.png "hackakay")](http://hackaday.com/2016/09/09/landscape-lighting-that-also-texts/) [Thanks HACKADAY for the LawnConnect BLOG Entry](http://hackaday.com/2016/09/09/landscape-lighting-that-also-texts/)
+
 
 
 
