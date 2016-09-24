@@ -101,6 +101,9 @@ To_number = 'Number to Call'
 ```
 save this `twilloaccount.py` file into the `/home/pi/LConnect` directory
 
+When the LawnConnect detects when one or more lights are out, a text will be sent to the number you choose.  It will repeat this text each night until you replace the light or a new calibration is performed by turn off and on the LawnConnect.  Here is an example text to an iphone:
+![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/twillo_text_example.png "Twillo Text")
+
 You are all set.  Good Luck and let me know if you have any questions.
 
 The webpage for the project is located at https://drkmsmithjr.github.io/LConnect
