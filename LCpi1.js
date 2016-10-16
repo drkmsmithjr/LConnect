@@ -29,23 +29,36 @@ function createXmlHttpRequestObject(){
 }
 
 function toggle(ids) {
-    e = document.getElementById("OnOff");
-    if (ids.value == "LIGHTS ON") {
-        ids.value = "LIGHTS OFF";
-	e.style.backgroundColor = "rgb(40,100,40)";
-        xmlHttp.open("POST", "../cgi-bin/LCpi1.py", true);
-	xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xmlHttp.onreadystatechange = handleServerResponse;
-	xmlHttp.send("LawnConnect_Off=Ready");
-        
-    } else {
-        ids.value = "LIGHTS ON";
-	e.style.backgroundColor = "rgb(20,150,50)";
-	xmlHttp.open("POST", "../cgi-bin/LCpi1.py", true);
-	xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xmlHttp.onreadystatechange = handleServerResponse;
-	xmlHttp.send("LawnConnect_On=Ready");
+    e = document.getElementById(ids.id);
+    if (ids.id == "OnOff") {
+        if (ids.value == "LIGHTS ON") {
+            ids.value = "LIGHTS OFF";
+            e.style.backgroundColor = "rgb(40,100,40)";
+            xmlHttp.open("POST", "../cgi-bin/LCpi1.py", true);
+            xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlHttp.onreadystatechange = handleServerResponse;
+            xmlHttp.send("LawnConnect_Off=Ready");
+        } else {
+            ids.value = "LIGHTS ON";
+            e.style.backgroundColor = "rgb(20,150,50)";
+            xmlHttp.open("POST", "../cgi-bin/LCpi1.py", true);
+            xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlHttp.onreadystatechange = handleServerResponse;
+            xmlHttp.send("LawnConnect_On=Ready");
+        }
     }
+    // CAlibrate button is not a toggle so, I need to check for it in the next two if statements
+    if (ids.id == "Calibrate"){
+        if (ids.value == "CALIBRATE") {
+            ids.value = "CALIBRATING";
+            e.style.backgroundColor = "rgb(20,150,50)";
+            xmlHttp.open("POST", "../cgi-bin/LCpi1.py", true);
+            xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlHttp.onreadystatechange = handleServerResponse;
+            xmlHttp.send("Calibrate_On=Ready");
+        }
+    }
+    
 }
 
 
@@ -81,13 +94,20 @@ function handleServerResponse(){
 				document.getElementById("OnOff").value = "LIGHTS OFF"
 				document.getElementById("OnOff").style.backgroundColor = "rgb(40,100,40)"
 			}
-                        if(jsontotal.LampOff){
+            if(jsontotal.LampOff){
 				//alert("LC_ON is true")
 				document.getElementById("LampOff").innerHTML = "LAMP BURNT OUT"
 			}else{
 				document.getElementById("LampOff").innerHTML = ""
 			}
-			
+			if(jsontotal.LampCalibrate){
+				//alert("Calibrate is true")
+				//document.getElementById("Calibrate").value = "CALIBRATING"
+				//document.getElementById("Calibrate").style.backgroundColor = "rgb(20,150,50)"
+			}else{
+				document.getElementById("Calibrate").value = "CALIBRATE"
+				document.getElementById("Calibrate").style.backgroundColor = "rgb(40,100,40)"
+			}
 			
 			setTimeout('process()',1000);	
 			//alert("after timeout")	

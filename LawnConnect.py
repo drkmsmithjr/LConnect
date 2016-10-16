@@ -174,7 +174,7 @@ if __name__ == "__main__":
  
     # reset the status file with the inital values. 
     with open(statfile,'w') as f:
-            pickle.dump((LightOn,next_sunset,next_turnoff,peak_read,Lamp_off),f)
+            pickle.dump((LightOn,Lamp_Calibrate,next_sunset,next_turnoff,peak_read,Lamp_off),f)
     TimeToOff = 0
  
  # monitor the states
@@ -185,7 +185,7 @@ if __name__ == "__main__":
         while True:
             try:
                 with open(statfile,'r') as f:
-                   LightOn, next_sunset, next_turnoff, peak_read, Lamp_off = pickle.load(f)
+                   LightOn, Lamp_Calibrate, next_sunset, next_turnoff, peak_read, Lamp_off = pickle.load(f)
                 break 
             except:
                 time.sleep(.1)
@@ -228,7 +228,8 @@ if __name__ == "__main__":
         peak_read = 0
         trim_pot = 0
 
-        # test to see if we have an off to on states
+        # test to see if we have a changge of state for the lights  
+        # if we do, then we can set or reset the digital filter
         if (LightOn != Current_On_State):
             Current_On_State = LightOn
             if (LightOn):
@@ -242,6 +243,8 @@ if __name__ == "__main__":
             On_Off_State = False
 
         #read the peak value of 99 reads
+        #We are performing full wave rectified peak current detection via software
+        # it is assumed that 99 reads will be at least a half 60Hz sine wave cycle
         y = []
         z = []
         for x in range(0,99):
@@ -266,13 +269,20 @@ if __name__ == "__main__":
         
         peak_read = peak_read*ADCtoCurrentGain
 
+        # if the device turns on, initialize filter at saved value
+        if (Off_On_State):
+           H2 = peak_save
+           H1 = peak_save
+           H0 = peak_save
+           peak_read = peak_save
+           
         # a 3 tap FIR filter for peak read value        
         H2 = H1
         H1 = H0
         H0 = peak_read
         peak_read = H0/3 + H1/3 + H2/3
 
-        #ensure the peak_read is zero when relay off
+        #ensure the peak_read is immediately zero when relay off
         if On_Off_State: 
              H2 = 0
              H1 = 0
@@ -293,8 +303,6 @@ if __name__ == "__main__":
         print peak_neg_adc
         print "min dc value"
         print min_neg_adc
-
-
            
         #Set the Relay(s) with the state of The LightOn parameter
         if LightOn == True:
@@ -308,82 +316,55 @@ if __name__ == "__main__":
             GPIO.setup(5,GPIO.OUT, initial=GPIO.HIGH)
             GPIO.setup(6,GPIO.OUT, initial=GPIO.HIGH)
 
-        if (Off_On_State):
-            # if this is the first time the device turns on we need to calibrate
-            if (Lamp_Calibrate):
-            # go ahead and read the ADC to set the peak_save.
-               Lamp_Calibrate = False
-               time.sleep(3)
-               peak_read = 0
-               for x in range(0,200):
-                  trim_pot = readadc(current_tran_winding_pos_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
-                  trim_pot = abs(trim_pot - readadc(current_tran_winding_neg_adc, SPICLK, SPIMOSI, SPIMISO, SPICS))
-                  if ( peak_read < trim_pot):
-                     peak_read = trim_pot
-               
-               peak_read = peak_read*ADCtoCurrentGain
-               
-               peak_save = peak_read
-                           
-            H2 = peak_save
-            H1 = peak_save
-            H0 = peak_save
-            peak_read = peak_save
+        # the Lamp will calibrate if the lamp is on for first turned on and if set by webpage.   
+        if (LightOn):
+           if (Lamp_Calibrate):
+              # go ahead and read the ADC to set the peak_save.
+              Lamp_Calibrate = False
+              time.sleep(3)
+              peak_read = 0
+              for x in range(0,200):
+                 trim_pot = readadc(current_tran_winding_pos_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
+                 trim_pot = abs(trim_pot - readadc(current_tran_winding_neg_adc, SPICLK, SPIMOSI, SPIMISO, SPICS))
+                 if ( peak_read < trim_pot):
+                    peak_read = trim_pot
+              peak_read = peak_read*ADCtoCurrentGain
+              peak_save = peak_read
+              
+              H2 = peak_save
+              H1 = peak_save
+              H0 = peak_save
+              peak_read = peak_save
+  
+           peak_diff = (peak_save - peak_read)
+           # if the difference is only -1 for a slow decrease then allow peak read to drop.
+           # in the case the the current drops to 2-3 at the start, then the peak 
+           # is allowed to drop slowly (analog peak with drop).   
+           # if the difference is > -1 then use envenlope
 
-
-        #if (On_Off_State):
-        #    peak_save = peak_read
-
-        # test to see if a lamp has burned out.  Only test if the Light is on.
-        #if (LightOn):  
-        #   peak_diff = (peak_read - peak_save)
-            # if the difference is only -1 for a slow decrease then allow peak read to drop.
-            # in the case the the current drops to 2-3 at the start, then the peak 
-            # is allowed to drop slowly (analog peak with drop).   
-            # if the difference is > -1 then use envenlope
-        #    if (peak_diff >= -1):
-        #       peak_save = peak_read
-        #    else:
-        #       peak_save = peak_save - .1
-        #    peak_diff = abs(peak_diff)
-        #    print "Peak Difference with save"
-        #    print peak_diff   
-        #    if (Lamp_off==False):   
-        #        if (peak_diff >= Lamp_Off_Threshold):
-        #            Lamp_off = True
-        #            lamp_save_trip = peak_read
-        #            lamp_save_ref = peak_save
-
-        if (LightOn):  
-            peak_diff = (peak_save - peak_read)
-            # if the difference is only -1 for a slow decrease then allow peak read to drop.
-            # in the case the the current drops to 2-3 at the start, then the peak 
-            # is allowed to drop slowly (analog peak with drop).   
-            # if the difference is > -1 then use envenlope
-
-            #peak_diff = abs(peak_diff)
-            print "Peak Difference with save"
-            print peak_diff   
-            if (Lamp_off==False):   
-                if (peak_diff >= Lamp_Off_Threshold):
-                    Lamp_off = True
-                    lamp_save_trip = peak_read
-                    lamp_save_ref = peak_save
-                    #trail account
-                    client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
-                    text_timer = time.time()+oneday   
-            else:
-                # allow the lights to be fixed live with hysterisis
-                if (peak_diff < (Lamp_Off_Threshold*0.6)):
-                    Lamp_off = False
-                    text_timer = time.time()+oneday
+           #peak_diff = abs(peak_diff)
+           print "Peak Difference with save"
+           print peak_diff   
+           if (Lamp_off==False):   
+               if (peak_diff >= Lamp_Off_Threshold):
+                   Lamp_off = True
+                   lamp_save_trip = peak_read
+                   lamp_save_ref = peak_save
+                   #trail account
+                   client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
+                   text_timer = time.time()+oneday   
+           else:
+               # allow the lights to be fixed live with hysterisis
+               if (peak_diff < (Lamp_Off_Threshold*0.6)):
+                   Lamp_off = False
+                   text_timer = time.time()+oneday
             
-                # check the text_timer and repeat if the timer count down is zero
-                if time.time()>text_timer :
-                #text again
-                    client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
-                    #reset timer
-                    text_timer = time.time()+oneday 
+               # check the text_timer and repeat if the timer count down is zero
+               if time.time()>text_timer :
+               #text again
+                   client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
+                   #reset timer
+                   text_timer = time.time()+oneday 
 
 
         print "lamp burnt"
@@ -394,7 +375,7 @@ if __name__ == "__main__":
        
 
         with open(statfile,'w') as f:
-            pickle.dump((LightOn,next_sunset,next_turnoff,peak_read,Lamp_off),f)
+            pickle.dump((LightOn,Lamp_Calibrate,next_sunset,next_turnoff,peak_read,Lamp_off),f)
 
         with open(statfile2,'w') as f:
             f.write(str(LightOn) + '\n')
