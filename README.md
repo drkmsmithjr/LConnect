@@ -16,6 +16,9 @@ LawnConnect automatically controls and monitors your lawn lights and lets you kn
 5. Sends text messages when a light is out.
 6. Accounts for daylight savings time
 
+# Latest Updates:
+15 Oct 2016: The calibrate button on the web page is now functional.    
+
 # Description:
 Have you ever went outside and noticed one or maybe all your lawn lights were burnt out?   This happened to me a little while ago.  I went outside at night and noticed all 12 of my lawnscape lights were burnt out.  Instead of being better at inspecting my yard at night,  I decided there had to be a better way and a perfect project for the Raspberry Pi.   This Raspberry Pi project is a simple solution that will ensure you have complete control of your lights, even when you aren't around.  Try this simple but powerful internet of things project using the Raspberry pi.        
 
@@ -23,7 +26,7 @@ The Rasberry pi will control all the turn on and off of lights and will continua
 
 Through a simple web application, you can remotely monitor the status and control the turn on and off of the system.  Otherwise, the Raspberry pi will turn on your lights exactly at sunset each night and will turn them off a random time between 6 and 9 hours later.    
 # Web Application:
-The web application, hosted by the Raspberry Pi, gives a status of the system.   The Lights On button is used to turn on and off the lights.  Text box messages tell when the lights will be turned on and off next.  there is a current monitor that shows the current being used the lawn lights. A calibrate button (not implemented yet) will be used to calibrate the system at anytime.  Right now calibrations occurs when the system first turns on.  In this setup, it will detect if a 9Watt or larger Lawn Light has is burned out.  Simple adjustments can be done to customize it to your system. 
+The web application, hosted by the Raspberry Pi, gives a status of the system.   The Lights On button is used to turn on and off the lights.  Text box messages tell when the lights will be turned on and off next.  there is a current monitor that shows the current being used the lawn lights. A calibrate button will be used to calibrate the system at anytime.  The sysetm will automatically calibrate when powered up for the first time.   On this setup, it will detect if a 9Watt or larger Lawn Light has is burned out.  Simple adjustments can be done to customize it to your system. 
 
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/webpage_shot.png "web page screen shot")
 
@@ -101,10 +104,13 @@ To_number = 'Number to Call'
 ```
 save this `twilloaccount.py` file into the `/home/pi/LConnect` directory
 
-When the LawnConnect detects when one or more lights are out, a text will be sent to the number you choose.  It will repeat this text each night until you replace the light or a new calibration is performed by turn off and on the LawnConnect.  Here is an example text to an iphone:
+When the LawnConnect detects when one or more lights are out, a text will be sent to the number you choose.  It will repeat this text each night until you replace the light or a new calibration is performed either by pressing the calibration button on the webpage or by restarting the software.  Here is an example text to an iphone:
 
 ![alt text](https://github.com/drkmsmithjr/LConnect/blob/master/twillo_image.png "Twillo Text")
 
+#Web Software
+## Calibrate Button
+The Calibrate button, when pushed, will set the reading of the light current and store this value for comparison.  A future reading below this baseline value will indicate that a light has burnt out and will send a text message indicating the event.   
 You are all set.  Good Luck and let me know if you have any questions.
 
 The webpage for the project is located at https://drkmsmithjr.github.io/LConnect
