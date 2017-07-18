@@ -69,20 +69,30 @@ if __name__ == "__main__":
     statfile = "status.txt"
     statfile2 = "status2.txt"
 
-# setting up the sunset parameters
-
+    # setting up the sunset parameters   
+    # Place the latitude and logitude degree values into the o.lat and o.long parameters.
     o = ephem.Observer()
     o.lat = '33.4672'
     o.long = '-117.6981'
     s=ephem.Sun()
     s.compute()
     
-    # on duration in seconds
-    OnDuration = int(random.uniform(6,9.5)*60*60)
+    #default minimum and maximum on times for the lights (in hours)
+    min_on_time= 6
+    max_on_time= 9.5
     
+    #default turn on delay after sunset (in seconds= hours*60*60)
+    turn_on_delay= int(0.1*60*60)
+    
+    # on duration in seconds is a random number 
+    # this is in seconds
+    OnDuration = int(random.uniform(min_on_time,max_on_time)*60*60)
+    
+    # The ephem library will provide the next sunset, next sunrise
+    # the next turn off is a random value shown above.  
     next_sunset = ephem.localtime(o.next_setting(s))
     next_sunrise = ephem.localtime(o.next_rising(s))
-    next_turnoff = next_sunset + datetime.timedelta(seconds=OnDuration)
+    next_turnoff = next_sunset + datetime.timedelta(seconds=(turn_on_delay+OnDuration))
     
     # BCM numbering
     GPIO.setmode(GPIO.BCM)
@@ -95,7 +105,6 @@ if __name__ == "__main__":
     # channel 4 relay
     GPIO.setup(6,GPIO.OUT, initial=GPIO.HIGH)
  
-
     # SPI port on the ADC to the Cobbler
     SPICLK = 18
     SPIMISO = 23
@@ -107,8 +116,10 @@ if __name__ == "__main__":
     GPIO.setup(SPICLK, GPIO.OUT)
     GPIO.setup(SPICS, GPIO.OUT)
 
-    # 10k trim pot connected to adc #0
+    # current reading information 
+    ## ADC port number of the positive current transformer winding
     current_tran_winding_pos_adc = 0;
+    ## ADC port number of the negative current transformer winding
     current_tran_winding_neg_adc = 1;
     peak_read = 0       # this keeps track of the last potentiometer value
     trim_pot = 0
@@ -119,7 +130,8 @@ if __name__ == "__main__":
     ave_neg_adc = 0     # average of the DC value.
     peak_neg_adc = 0
     min_neg_adc = 0
-    # we need to initialize the filter 
+    
+    # we need to initialize the digital filter 
     H0 = 0
     H1 = 0
     H2 = 0
@@ -131,7 +143,7 @@ if __name__ == "__main__":
     lamp_save_trig = 0
     lamp_save_ref = 0
 
-    # status of the lamp off
+    # The boolean that determines if a Lamp has burnt out : Lamp_off
     Lamp_off = False
 
     oneday = 60*60*24
@@ -147,10 +159,11 @@ if __name__ == "__main__":
     ADCtoCurrentGain = 3.3/1024/470*2500/math.sqrt(2)
     print(ADCtoCurrentGain)
     
-    # threshold for a lamp off states this is a dv/dt value
+    # threshold To detect that a Lamp has burnt out: 7 out of 1024 time sthe ADC current gain
     Lamp_Off_Threshold = 7.0*ADCtoCurrentGain
 
     # calibrate the lamp status on the first turn off to on transition
+    # this boolean is also set if the Calibrate button is pressed on the web page
     Lamp_Calibrate = True
     
     # determine if LightOn should be On or Off 
@@ -159,7 +172,9 @@ if __name__ == "__main__":
     # the second inequality determines if we need to adjust the turn off time by 24 hours 
     LightOn = False
     
-    if datetime.datetime.now() < next_sunset:
+    # Check the current time and turn on the lights if we are currently after sunset and before
+    #   the next scheduled turnoff
+    if datetime.datetime.now() < next_sunset + datetime.timedelta(seconds=turn_on_delay):
         temp = next_turnoff + datetime.timedelta(hours = -24)    
         if datetime.datetime.now() < temp:
             LightOn = True
@@ -173,6 +188,7 @@ if __name__ == "__main__":
     print ephem.localtime(o.next_setting(s))
  
     # reset the status file with the inital values. 
+    # this file is communicated to the web page.   
     with open(statfile,'w') as f:
             pickle.dump((LightOn,Lamp_Calibrate,next_sunset,next_turnoff,peak_read,Lamp_off),f)
     TimeToOff = 0
@@ -181,7 +197,7 @@ if __name__ == "__main__":
  # Current LIght condition
  
     while True:
-        # read the status file to see if the user turned on lights:
+        # read the status file to see if the user turned on lights from web page:
         while True:
             try:
                 with open(statfile,'r') as f:
@@ -191,14 +207,12 @@ if __name__ == "__main__":
                 time.sleep(.1)
                 
         # on duration in seconds
-        OnDuration = int(random.uniform(6,9.5)*60*60)
-
-
+        OnDuration = int(random.uniform(min_on_time,max_on_time)*60*60)
    
     # test if we should turn on lights or turn off lights
     # adjust the state of the lights  
         if LightOn == False:
-            if datetime.datetime.now() > next_sunset:
+            if datetime.datetime.now() > (next_sunset + datetime.timedelta(seconds=turn_on_delay)):
                 LightOn = True
                 print "The lights were turn on"
                 print LightOn
@@ -212,7 +226,7 @@ if __name__ == "__main__":
                 print "The lights were turned off"
                 print LightOn
                 #GPIO.setup(25,GPIO.OUT, initial=GPIO.HIGH)
-                next_turnoff = next_sunset + datetime.timedelta(seconds=OnDuration)
+                next_turnoff = next_sunset + datetime.timedelta(seconds=(turn_on_delay+OnDuration))
         
         print "The Lights are:"
         print LightOn
@@ -351,7 +365,10 @@ if __name__ == "__main__":
                    lamp_save_trip = peak_read
                    lamp_save_ref = peak_save
                    #trail account
-                   client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
+                   try: 
+                      client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
+                   except:
+                      print "Twilio Didn't Work: A Lawn Light Burnt Out"
                    text_timer = time.time()+oneday   
            else:
                # allow the lights to be fixed live with hysterisis
@@ -362,7 +379,10 @@ if __name__ == "__main__":
                # check the text_timer and repeat if the timer count down is zero
                if time.time()>text_timer :
                #text again
-                   client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
+                   try: 
+                      client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
+                   except:
+                      print "Twilio Didn't Work: A Lawn Light Burnt Out"
                    #reset timer
                    text_timer = time.time()+oneday 
 
