@@ -11,7 +11,7 @@ import pickle
 import math
 #this file has your account info
 # Parameters you need to supply Taccount, Ttoken, Tnumber, To_number
-# 
+#
 # wehre to put the twillo account information
 #Taccount= 'twillo account'
 #Ttoken ='twillo token'
@@ -25,7 +25,7 @@ client = TwilioRestClient(account=Taccount, token=Ttoken)
 
 
 # read SPI data from MCP3008 chip, 8 possible adc's (0 thru 7)
-#single endded ADC right now.   
+#single endded ADC right now.
 def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         if ((adcnum > 7) or (adcnum < 0)):
                 return -1
@@ -57,7 +57,7 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
                         adcout |= 0x1
 
         GPIO.output(cspin, True)
-        
+
         adcout >>= 1       # first bit is 'null' so drop it
         return adcout
 
@@ -69,31 +69,31 @@ if __name__ == "__main__":
     statfile = "status.txt"
     statfile2 = "status2.txt"
 
-    # setting up the sunset parameters   
+    # setting up the sunset parameters
     # Place the latitude and logitude degree values into the o.lat and o.long parameters.
     o = ephem.Observer()
     o.lat = '33.4672'
     o.long = '-117.6981'
     s=ephem.Sun()
     s.compute()
-    
+
     #default minimum and maximum on times for the lights (in hours)
-    min_on_time= 6
-    max_on_time= 9.5
-    
+    min_on_time= 5.5
+    max_on_time= 6.5
+
     #default turn on delay after sunset (in seconds= hours*60*60)
     turn_on_delay= int(0.1*60*60)
-    
-    # on duration in seconds is a random number 
+
+    # on duration in seconds is a random number
     # this is in seconds
     OnDuration = int(random.uniform(min_on_time,max_on_time)*60*60)
-    
+
     # The ephem library will provide the next sunset, next sunrise
-    # the next turn off is a random value shown above.  
+    # the next turn off is a random value shown above.
     next_sunset = ephem.localtime(o.next_setting(s))
     next_sunrise = ephem.localtime(o.next_rising(s))
     next_turnoff = next_sunset + datetime.timedelta(seconds=(turn_on_delay+OnDuration))
-    
+
     # BCM numbering
     GPIO.setmode(GPIO.BCM)
     # channe1 1 relay
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     GPIO.setup(5,GPIO.OUT, initial=GPIO.HIGH)
     # channel 4 relay
     GPIO.setup(6,GPIO.OUT, initial=GPIO.HIGH)
- 
+
     # SPI port on the ADC to the Cobbler
     SPICLK = 18
     SPIMISO = 23
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     GPIO.setup(SPICLK, GPIO.OUT)
     GPIO.setup(SPICS, GPIO.OUT)
 
-    # current reading information 
+    # current reading information
     ## ADC port number of the positive current transformer winding
     current_tran_winding_pos_adc = 0;
     ## ADC port number of the negative current transformer winding
@@ -130,8 +130,8 @@ if __name__ == "__main__":
     ave_neg_adc = 0     # average of the DC value.
     peak_neg_adc = 0
     min_neg_adc = 0
-    
-    # we need to initialize the digital filter 
+
+    # we need to initialize the digital filter
     H0 = 0
     H1 = 0
     H2 = 0
@@ -155,27 +155,27 @@ if __name__ == "__main__":
     # ADC is based on 3.3v range, or 3.22mv/bit with 10bits.
     # Rsecondary is 470ohms
     # transformer is 1:2500
-    # primary current = ADC*3.3v/1024/470*2500*sqrt(2)   
+    # primary current = ADC*3.3v/1024/470*2500*sqrt(2)
     ADCtoCurrentGain = 3.3/1024/470*2500/math.sqrt(2)
     print(ADCtoCurrentGain)
-    
+
     # threshold To detect that a Lamp has burnt out: 7 out of 1024 time sthe ADC current gain
     Lamp_Off_Threshold = 7.0*ADCtoCurrentGain
 
     # calibrate the lamp status on the first turn off to on transition
     # this boolean is also set if the Calibrate button is pressed on the web page
     Lamp_Calibrate = True
-    
-    # determine if LightOn should be On or Off 
+
+    # determine if LightOn should be On or Off
     # if next_sunset > next_sunrise and now() < next_turnoff - 24 hours
-    # the first inequality deteremines it is night.   
-    # the second inequality determines if we need to adjust the turn off time by 24 hours 
+    # the first inequality deteremines it is night.
+    # the second inequality determines if we need to adjust the turn off time by 24 hours
     LightOn = False
-    
+
     # Check the current time and turn on the lights if we are currently after sunset and before
     #   the next scheduled turnoff
     if datetime.datetime.now() < next_sunset + datetime.timedelta(seconds=turn_on_delay):
-        temp = next_turnoff + datetime.timedelta(hours = -24)    
+        temp = next_turnoff + datetime.timedelta(hours = -24)
         if datetime.datetime.now() < temp:
             LightOn = True
             GPIO.setup(25,GPIO.OUT, initial=GPIO.LOW)
@@ -184,33 +184,41 @@ if __name__ == "__main__":
             GPIO.setup(6,GPIO.OUT, initial=GPIO.LOW)
             next_turnoff = temp
             print(temp)
-     
+
     print ephem.localtime(o.next_setting(s))
- 
-    # reset the status file with the inital values. 
-    # this file is communicated to the web page.   
+
+    # reset the status file with the inital values.
+    # this file is communicated to the web page.
     with open(statfile,'w') as f:
             pickle.dump((LightOn,Lamp_Calibrate,next_sunset,next_turnoff,peak_read,Lamp_off),f)
     TimeToOff = 0
- 
+
  # monitor the states
  # Current LIght condition
- 
+
+ # Only read and write data every 1000 cycles.
+    index = 0
+    maxcycles = 1
+
+
     while True:
+        t1 = datetime.datetime.now()
+        index += 1
         # read the status file to see if the user turned on lights from web page:
-        while True:
-            try:
-                with open(statfile,'r') as f:
-                   LightOn, Lamp_Calibrate, next_sunset, next_turnoff, peak_read, Lamp_off = pickle.load(f)
-                break 
-            except:
-                time.sleep(.1)
-                
+        if index > maxcycles :
+            while True:
+               try:
+                   with open(statfile,'r') as f:
+                      LightOn, Lamp_Calibrate, next_sunset, next_turnoff, peak_read, Lamp_off = pickle.load(f)
+                   break
+               except:
+                   time.sleep(.1)
+
         # on duration in seconds
         OnDuration = int(random.uniform(min_on_time,max_on_time)*60*60)
-   
+
     # test if we should turn on lights or turn off lights
-    # adjust the state of the lights  
+    # adjust the state of the lights
         if LightOn == False:
             if datetime.datetime.now() > (next_sunset + datetime.timedelta(seconds=turn_on_delay)):
                 LightOn = True
@@ -227,22 +235,15 @@ if __name__ == "__main__":
                 print LightOn
                 #GPIO.setup(25,GPIO.OUT, initial=GPIO.HIGH)
                 next_turnoff = next_sunset + datetime.timedelta(seconds=(turn_on_delay+OnDuration))
-        
-        print "The Lights are:"
-        print LightOn
-        print "The next sunset"
-        print next_sunset
-        print "the next sunrise"
-        print next_sunrise
-        print "the next turnoff"
-        print next_turnoff
-        print "the current time"
-        print datetime.datetime.now()
-	# read the ADC for 100 cycle to find the peak current
+
+        print "The Lights are:     %s" %LightOn
+        print "The next sunset:    %s" %next_sunset
+        print "the next sunrise:   %s" %next_sunrise
+        print "the next turnoff:   %s" %next_turnoff
         peak_read = 0
         trim_pot = 0
 
-        # test to see if we have a changge of state for the lights  
+        # test to see if we have a changge of state for the lights
         # if we do, then we can set or reset the digital filter
         if (LightOn != Current_On_State):
             Current_On_State = LightOn
@@ -280,7 +281,7 @@ if __name__ == "__main__":
         z.sort()
         peak_neg_adc = z.pop()
         min_neg_adc = z[0]
-        
+
         peak_read = peak_read*ADCtoCurrentGain
 
         # if the device turns on, initialize filter at saved value
@@ -289,35 +290,29 @@ if __name__ == "__main__":
            H1 = peak_save
            H0 = peak_save
            peak_read = peak_save
-           
-        # a 3 tap FIR filter for peak read value        
+
+        # a 3 tap FIR filter for peak read value
         H2 = H1
         H1 = H0
         H0 = peak_read
         peak_read = H0/3 + H1/3 + H2/3
 
         #ensure the peak_read is immediately zero when relay off
-        if On_Off_State: 
+        if On_Off_State:
              H2 = 0
              H1 = 0
              H0 = 0
              peak_read = 0
-   
+
         # adjust the peak_save parameter if the differential is only one value
-        
-        print "the peak read"
-        print peak_read
-        print "the peak save read"
-        print peak_save
-        print "the average read"
-        print ave_read
-        print "average dc read"
-        print ave_neg_adc
-        print "peak dc value"
-        print peak_neg_adc
-        print "min dc value"
-        print min_neg_adc
-           
+
+        print "the peak read:      %s" %peak_read
+        print "the peak save read: %s" %peak_save
+        print "the average read:   %s" %ave_read
+        print "average dc read:    %s" %ave_neg_adc
+        print "peak dc value:      %s" %peak_neg_adc
+        print "min dc value:       %s" %min_neg_adc
+
         #Set the Relay(s) with the state of The LightOn parameter
         if LightOn == True:
             GPIO.setup(25,GPIO.OUT, initial=GPIO.LOW)
@@ -330,7 +325,7 @@ if __name__ == "__main__":
             GPIO.setup(5,GPIO.OUT, initial=GPIO.HIGH)
             GPIO.setup(6,GPIO.OUT, initial=GPIO.HIGH)
 
-        # the Lamp will calibrate if the lamp is on for first turned on and if set by webpage.   
+        # the Lamp will calibrate if the lamp is on for first turned on and if set by webpage.
         if (LightOn):
            if (Lamp_Calibrate):
               # go ahead and read the ADC to set the peak_save.
@@ -344,64 +339,64 @@ if __name__ == "__main__":
                     peak_read = trim_pot
               peak_read = peak_read*ADCtoCurrentGain
               peak_save = peak_read
-              
+
               H2 = peak_save
               H1 = peak_save
               H0 = peak_save
               peak_read = peak_save
-  
+
            peak_diff = (peak_save - peak_read)
            # if the difference is only -1 for a slow decrease then allow peak read to drop.
-           # in the case the the current drops to 2-3 at the start, then the peak 
-           # is allowed to drop slowly (analog peak with drop).   
+           # in the case the the current drops to 2-3 at the start, then the peak
+           # is allowed to drop slowly (analog peak with drop).
            # if the difference is > -1 then use envenlope
 
            #peak_diff = abs(peak_diff)
-           print "Peak Difference with save"
-           print peak_diff   
-           if (Lamp_off==False):   
+           print "Peak Difference with save: %s" %peak_diff
+           if (Lamp_off==False):
                if (peak_diff >= Lamp_Off_Threshold):
                    Lamp_off = True
                    lamp_save_trip = peak_read
                    lamp_save_ref = peak_save
                    #trail account
-                   try: 
+                   try:
                       client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
                    except:
                       print "Twilio Didn't Work: A Lawn Light Burnt Out"
-                   text_timer = time.time()+oneday   
+                   text_timer = time.time()+oneday
            else:
                # allow the lights to be fixed live with hysterisis
                if (peak_diff < (Lamp_Off_Threshold*0.6)):
                    Lamp_off = False
                    text_timer = time.time()+oneday
-            
+
                # check the text_timer and repeat if the timer count down is zero
                if time.time()>text_timer :
                #text again
-                   try: 
+                   try:
                       client.messages.create(to=To_number,from_=Tnumber,body="A lawn light was burnt out!")
                    except:
                       print "Twilio Didn't Work: A Lawn Light Burnt Out"
                    #reset timer
-                   text_timer = time.time()+oneday 
+                   text_timer = time.time()+oneday
 
-
-        print "lamp burnt"
-        print Lamp_off
+        print ("lamp burnt: %s" % Lamp_off)
         if (Lamp_off):
            print "lamp_save_trig", lamp_save_trig
            print "lamp_save_ref", lamp_save_ref
-       
 
-        with open(statfile,'w') as f:
-            pickle.dump((LightOn,Lamp_Calibrate,next_sunset,next_turnoff,peak_read,Lamp_off),f)
-
-        with open(statfile2,'w') as f:
-            f.write(str(LightOn) + '\n')
-            f.write(str(next_sunset) + '\n')
-            f.write(str(next_turnoff) + '\n')
+        print "The index = %s" %index
 
 
-        time.sleep(1.5)
-    
+        if index > maxcycles:
+           with open(statfile,'w') as f:
+               pickle.dump((LightOn,Lamp_Calibrate,next_sunset,next_turnoff,peak_read,Lamp_off),f)
+           with open(statfile2,'w') as f:
+               f.write(str(LightOn) + '\n')
+               f.write(str(next_sunset) + '\n')
+               f.write(str(next_turnoff) + '\n')
+           index = 0
+
+        time.sleep(.5)
+        t2 = datetime.datetime.now()
+        print ("The total time to run string: %s" % str(t2-t1))

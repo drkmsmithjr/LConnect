@@ -69,9 +69,10 @@ function process(){
 		xmlHttp.open("GET", "../cgi-bin/LCpi1.py", true);
 		xmlHttp.onreadystatechange = handleServerResponse;
 		xmlHttp.send(null);
-	}else{
-		setTimeout('process()',1000);
 	}
+    //else{
+	//	setTimeout('process()',100);
+	//}
 }
 
 
@@ -109,14 +110,15 @@ function handleServerResponse(){
 				document.getElementById("Calibrate").style.backgroundColor = "rgb(40,100,40)"
 			}
 			
-			setTimeout('process()',1000);	
+			//setTimeout('process()',100);	
 			//alert("after timeout")	
 		}else{
 			//alert('Something went wrong!')
 		}
-	}else{
+	}
+    else{
 		//alert("not readystate 4")
-		setTimeout('process()',1000)
+		setTimeout('process()',100)
 	}
 }
 

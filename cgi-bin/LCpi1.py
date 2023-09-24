@@ -29,7 +29,7 @@ dateformat = "%d-%m-%y: %I:%M %p"
 
 def main():
 
-    
+   
      # read the file and initiate each variable
     # FILE NEEDS THREE LINES OF DATA
     # Line 1: Main Switch; Line 2: Brew Switch: Line 3: sTeam switch
@@ -41,7 +41,7 @@ def main():
         except:
             time.sleep(.1)
  
-
+    
     dform = cgi.FieldStorage()
     if dform.getvalue("LawnConnect_On"):
         LC_ON = True
